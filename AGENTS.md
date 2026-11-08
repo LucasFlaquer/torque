@@ -9,6 +9,103 @@ Read `docs/README.md` inside that installed package first, then read the relevan
 This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": true` in the root `turbo.json` or `turbo.jsonc` to opt in; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
 <!-- END:turborepo-agent-rules -->
 
+# AGENTS.md
+
+Guidance for AI coding agents working in this repository.
+
+## What this is
+
+Torque is a mechanic shop management app built to practice fullstack development: data listing, pagination, caching and business rules under concurrency. Roles: `customer`, `attendant`, `mechanic`, `manager`.
+
+Current status: Turborepo scaffold. The Next.js web app has the starter page; `apps/api` and the `contracts`, `db`, `redis` and `domain` packages are empty placeholders. Docker Compose runs Postgres and Redis.
+
+## Prerequisites
+
+- Node.js `>=24` (developed with v24.15.0; enforced by `engines` in the root `package.json`)
+- pnpm `11.25.0` (pinned through `packageManager` in the root `package.json`; use Corepack or a matching global install)
+
+## Install
+
+```sh
+pnpm install
+cp .env.example .env
+docker compose up -d --wait   # Postgres and Redis, both with healthchecks
+```
+
+If port 5432 or 6379 is taken on the host, set `POSTGRES_PORT` / `REDIS_PORT` in `.env` (and update `DATABASE_URL` / `REDIS_URL` to match).
+
+## Root scripts
+
+Run these from the repository root. Each one (except `format`, `check` and `fix`) runs a Turborepo task across all workspaces.
+
+| Command | What it does |
+| --- | --- |
+| `pnpm dev` | `turbo run dev`: starts every app in dev mode (web on http://localhost:3000) |
+| `pnpm build` | `turbo run build`: production build of every app and package |
+| `pnpm lint` | `turbo run lint`: Oxlint with `--max-warnings 0` in every workspace |
+| `pnpm check-types` | `turbo run check-types`: type-check (`tsc --noEmit`; the web app runs `next typegen` first) |
+| `pnpm test` | `turbo run test`: tests in every workspace that has a `test` script (none yet) |
+| `pnpm format:check` | `turbo run format:check`: Oxfmt `--check` in every workspace |
+| `pnpm format` | Oxfmt `--write` over the whole repository |
+| `pnpm check` | `ultracite check`: Oxlint + Oxfmt check over the whole repository |
+| `pnpm fix` | `ultracite fix`: apply lint fixes and formatting over the whole repository |
+
+Linting and formatting use [Ultracite](https://www.ultracite.ai) (Oxlint + Oxfmt). The config lives in `@torque/lint-config`; every workspace (and the root) has its own `oxlint.config.ts` and `oxfmt.config.ts` (`.mts` where `package.json` has no `"type": "module"`) that re-export the matching config from that package, because Oxlint and Oxfmt use the nearest config file. A new workspace needs both files plus `@torque/lint-config`, `oxlint` and `oxfmt` in its `devDependencies`.
+
+Run a task for a single workspace with a filter:
+
+```sh
+pnpm exec turbo run build --filter=web
+pnpm --filter web dev
+pnpm --filter @torque/ui lint
+```
+
+Before finishing a change, `pnpm build`, `pnpm check` and `pnpm check-types` must pass.
+
+## Workspace layout
+
+```
+apps/
+  web/                    Next.js (App Router) web app, package name `web`
+  api/                    Fastify API, package name `api` (only package.json so far)
+packages/
+  contracts/              @torque/contracts: Zod schemas and request/response types (placeholder)
+  db/                     @torque/db: Prisma schema, client, migrations, seed (placeholder)
+  redis/                  @torque/redis: Redis client, keys, cache, lock and pub/sub helpers (placeholder)
+  domain/                 @torque/domain: pure business rules, no Prisma/Redis/Fastify imports (placeholder)
+  ui/                     @torque/ui: shared React components (exports ./src/*.tsx)
+  lint-config/            @torque/lint-config: Oxlint configs (oxlint/base, oxlint/react, oxlint/next) and Oxfmt config (oxfmt) on Ultracite presets
+  typescript-config/      @torque/typescript-config: shared tsconfig bases (base, nextjs, react-library)
+docker-compose.yml        Postgres 18 and Redis 8 with healthchecks and named volumes
+.env.example              Environment variables template (copy to .env)
+turbo.json                Turborepo task pipeline
+pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
+```
+
+## Conventions
+
+- English everywhere: code, comments, commit messages, docs, issues and PRs.
+- TypeScript in strict mode (`strict`, `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` are on in `@torque/typescript-config/base.json`).
+- Internal packages use the `@torque/*` scope and are referenced with `workspace:*`.
+- Use `pnpm --filter <workspace>` to add dependencies or run scripts in one workspace; do not `cd` into packages and use another package manager.
+- Run Turborepo tasks from the repository root so caching and task dependencies apply.
+- Do not commit `node_modules`, `.turbo`, `.next` or `.env*` files (already in `.gitignore`).
+- This file (`AGENTS.md`) is the single source of agent instructions; the root `CLAUDE.md` only imports it with `@AGENTS.md`, so edit this file instead. It holds a block managed by `turbo`, and `apps/web/AGENTS.md` / `apps/web/CLAUDE.md` are generated by `next dev`. They point to the version-matched docs bundled in `node_modules/turbo` and `node_modules/next`; read those docs before changing Turborepo or Next.js config. Keep these files committed and do not edit the managed blocks by hand.
+
+## Planned architecture
+
+Not built yet; this lands in Sprint 1.
+
+- `apps/web`: Next.js App Router frontend.
+- `apps/api`: Fastify API.
+- `packages/contracts`: Zod schemas shared by web and API.
+- `packages/db`: PostgreSQL + Prisma.
+- `packages/redis`: Redis client and caching helpers.
+- `packages/domain`: pure business rules.
+- `packages/config`: shared configuration.
+
+Specs and tasks live as issues in the GitHub Project for this repository. Check the relevant issue before implementing a feature.
+
 # Ultracite Code Standards
 
 This project uses **Ultracite**, a zero-config preset that enforces strict code quality standards through automated formatting and linting.
