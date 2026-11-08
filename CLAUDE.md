@@ -6,7 +6,7 @@ Guidance for AI coding agents working in this repository.
 
 Torque is a mechanic shop management app (study and portfolio project) built to practice fullstack development: data listing, pagination, caching and business rules under concurrency. Roles: `customer`, `attendant`, `mechanic`, `manager`.
 
-Current status: initial Turborepo scaffold. Only the Next.js web app and the starter shared packages exist.
+Current status: Turborepo scaffold. The Next.js web app has the starter page; `apps/api` and the `contracts`, `db`, `redis` and `domain` packages are empty placeholders. Docker Compose runs Postgres and Redis.
 
 ## Prerequisites
 
@@ -17,7 +17,11 @@ Current status: initial Turborepo scaffold. Only the Next.js web app and the sta
 
 ```sh
 pnpm install
+cp .env.example .env
+docker compose up -d --wait   # Postgres and Redis, both with healthchecks
 ```
+
+If port 5432 or 6379 is taken on the host, set `POSTGRES_PORT` / `REDIS_PORT` in `.env` (and update `DATABASE_URL` / `REDIS_URL` to match).
 
 ## Root scripts
 
@@ -29,6 +33,7 @@ Run these from the repository root. Each one (except `format`, `check` and `fix`
 | `pnpm build` | `turbo run build`: production build of every app and package |
 | `pnpm lint` | `turbo run lint`: Oxlint with `--max-warnings 0` in every workspace |
 | `pnpm check-types` | `turbo run check-types`: type-check (`tsc --noEmit`; the web app runs `next typegen` first) |
+| `pnpm test` | `turbo run test`: tests in every workspace that has a `test` script (none yet) |
 | `pnpm format:check` | `turbo run format:check`: Oxfmt `--check` in every workspace |
 | `pnpm format` | Oxfmt `--write` over the whole repository |
 | `pnpm check` | `ultracite check`: Oxlint + Oxfmt check over the whole repository |
@@ -51,10 +56,17 @@ Before finishing a change, `pnpm build`, `pnpm check` and `pnpm check-types` mus
 ```
 apps/
   web/                    Next.js (App Router) web app, package name `web`
+  api/                    Fastify API, package name `api` (only package.json so far)
 packages/
+  contracts/              @torque/contracts: Zod schemas and request/response types (placeholder)
+  db/                     @torque/db: Prisma schema, client, migrations, seed (placeholder)
+  redis/                  @torque/redis: Redis client, keys, cache, lock and pub/sub helpers (placeholder)
+  domain/                 @torque/domain: pure business rules, no Prisma/Redis/Fastify imports (placeholder)
   ui/                     @torque/ui: shared React components (exports ./src/*.tsx)
   lint-config/            @torque/lint-config: Oxlint configs (oxlint/base, oxlint/react, oxlint/next) and Oxfmt config (oxfmt) on Ultracite presets
   typescript-config/      @torque/typescript-config: shared tsconfig bases (base, nextjs, react-library)
+docker-compose.yml        Postgres 18 and Redis 8 with healthchecks and named volumes
+.env.example              Environment variables template (copy to .env)
 turbo.json                Turborepo task pipeline
 pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
 ```
@@ -62,7 +74,7 @@ pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
 ## Conventions
 
 - English everywhere: code, comments, commit messages, docs, issues and PRs.
-- TypeScript in strict mode (`strict` and `noUncheckedIndexedAccess` are on in `@torque/typescript-config/base.json`).
+- TypeScript in strict mode (`strict`, `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` are on in `@torque/typescript-config/base.json`).
 - Internal packages use the `@torque/*` scope and are referenced with `workspace:*`.
 - Use `pnpm --filter <workspace>` to add dependencies or run scripts in one workspace; do not `cd` into packages and use another package manager.
 - Run Turborepo tasks from the repository root so caching and task dependencies apply.

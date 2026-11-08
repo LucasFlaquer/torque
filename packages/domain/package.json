@@ -1,0 +1,22 @@
+{
+  "name": "@torque/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "oxlint --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "devDependencies": {
+    "@torque/lint-config": "workspace:*",
+    "@torque/typescript-config": "workspace:*",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.92.0",
+    "typescript": "7.0.2"
+  }
+}

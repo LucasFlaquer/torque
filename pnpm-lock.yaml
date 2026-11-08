@@ -27,6 +27,8 @@ importers:
         specifier: 8.1.1
         version: 8.1.1(oxfmt@0.75.0)(oxlint@1.92.0)
 
+  apps/api: {}
+
   apps/web:
     dependencies:
       '@torque/ui':
@@ -67,6 +69,60 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  packages/contracts:
+    devDependencies:
+      '@torque/lint-config':
+        specifier: workspace:*
+        version: link:../lint-config
+      '@torque/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      oxfmt:
+        specifier: ^0.75.0
+        version: 0.75.0
+      oxlint:
+        specifier: ^1.92.0
+        version: 1.92.0
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
+  packages/db:
+    devDependencies:
+      '@torque/lint-config':
+        specifier: workspace:*
+        version: link:../lint-config
+      '@torque/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      oxfmt:
+        specifier: ^0.75.0
+        version: 0.75.0
+      oxlint:
+        specifier: ^1.92.0
+        version: 1.92.0
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
+  packages/domain:
+    devDependencies:
+      '@torque/lint-config':
+        specifier: workspace:*
+        version: link:../lint-config
+      '@torque/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      oxfmt:
+        specifier: ^0.75.0
+        version: 0.75.0
+      oxlint:
+        specifier: ^1.92.0
+        version: 1.92.0
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
   packages/lint-config:
     dependencies:
       oxfmt:
@@ -78,6 +134,24 @@ importers:
       ultracite:
         specifier: 8.1.1
         version: 8.1.1(oxfmt@0.75.0)(oxlint@1.92.0)
+
+  packages/redis:
+    devDependencies:
+      '@torque/lint-config':
+        specifier: workspace:*
+        version: link:../lint-config
+      '@torque/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      oxfmt:
+        specifier: ^0.75.0
+        version: 0.75.0
+      oxlint:
+        specifier: ^1.92.0
+        version: 1.92.0
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
 
   packages/typescript-config: {}
 
