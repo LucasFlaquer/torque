@@ -24,7 +24,7 @@ Project board: [Torque v1](https://github.com/users/LucasFlaquer/projects/4)
 
 ## Status
 
-Initial scaffold: a Turborepo monorepo with a Next.js web app (`apps/web`) and shared packages (`@torque/ui`, `@torque/eslint-config`, `@torque/typescript-config`). The API, database and domain packages are planned for Sprint 1.
+Initial scaffold: a Turborepo monorepo with a Next.js web app (`apps/web`) and shared packages (`@torque/ui`, `@torque/lint-config`, `@torque/typescript-config`). The API, database and domain packages are planned for Sprint 1.
 
 ## Getting started
 

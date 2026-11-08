@@ -1,0 +1,17 @@
+{
+  "name": "@torque/lint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./oxfmt": "./oxfmt.js",
+    "./oxlint/base": "./oxlint/base.js",
+    "./oxlint/next": "./oxlint/next.js",
+    "./oxlint/react": "./oxlint/react.js"
+  },
+  "dependencies": {
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.92.0",
+    "ultracite": "8.1.1"
+  }
+}

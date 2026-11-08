@@ -1,14 +1,16 @@
 {
   "name": "web",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --max-warnings 0",
-    "check-types": "next typegen && tsc --noEmit"
+    "lint": "oxlint --max-warnings 0",
+    "check-types": "next typegen && tsc --noEmit",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "dependencies": {
     "@torque/ui": "workspace:*",
@@ -17,12 +19,13 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@torque/eslint-config": "workspace:*",
+    "@torque/lint-config": "workspace:*",
     "@torque/typescript-config": "workspace:*",
     "@types/node": "26.4.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
-    "eslint": "10.9.1",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.92.0",
     "typescript": "7.0.2"
   }
 }

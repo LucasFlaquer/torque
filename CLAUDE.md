@@ -21,15 +21,20 @@ pnpm install
 
 ## Root scripts
 
-Run these from the repository root. Each one (except `format`) runs a Turborepo task across all workspaces.
+Run these from the repository root. Each one (except `format`, `check` and `fix`) runs a Turborepo task across all workspaces.
 
-| Command            | What it does                                                                                |
-| ------------------ | ------------------------------------------------------------------------------------------- |
-| `pnpm dev`         | `turbo run dev`: starts every app in dev mode (web on http://localhost:3000)                |
-| `pnpm build`       | `turbo run build`: production build of every app and package                                |
-| `pnpm lint`        | `turbo run lint`: ESLint with `--max-warnings 0` in every workspace                         |
+| Command | What it does |
+| --- | --- |
+| `pnpm dev` | `turbo run dev`: starts every app in dev mode (web on http://localhost:3000) |
+| `pnpm build` | `turbo run build`: production build of every app and package |
+| `pnpm lint` | `turbo run lint`: Oxlint with `--max-warnings 0` in every workspace |
 | `pnpm check-types` | `turbo run check-types`: type-check (`tsc --noEmit`; the web app runs `next typegen` first) |
-| `pnpm format`      | Prettier `--write` over `**/*.{ts,tsx,md}`                                                  |
+| `pnpm format:check` | `turbo run format:check`: Oxfmt `--check` in every workspace |
+| `pnpm format` | Oxfmt `--write` over the whole repository |
+| `pnpm check` | `ultracite check`: Oxlint + Oxfmt check over the whole repository |
+| `pnpm fix` | `ultracite fix`: apply lint fixes and formatting over the whole repository |
+
+Linting and formatting use [Ultracite](https://www.ultracite.ai) (Oxlint + Oxfmt). The config lives in `@torque/lint-config`; every workspace (and the root) has its own `oxlint.config.ts` and `oxfmt.config.ts` (`.mts` where `package.json` has no `"type": "module"`) that re-export the matching config from that package, because Oxlint and Oxfmt use the nearest config file. A new workspace needs both files plus `@torque/lint-config`, `oxlint` and `oxfmt` in its `devDependencies`.
 
 Run a task for a single workspace with a filter:
 
@@ -39,7 +44,7 @@ pnpm --filter web dev
 pnpm --filter @torque/ui lint
 ```
 
-Before finishing a change, `pnpm build`, `pnpm lint` and `pnpm check-types` must pass.
+Before finishing a change, `pnpm build`, `pnpm check` and `pnpm check-types` must pass.
 
 ## Workspace layout
 
@@ -48,7 +53,7 @@ apps/
   web/                    Next.js (App Router) web app, package name `web`
 packages/
   ui/                     @torque/ui: shared React components (exports ./src/*.tsx)
-  eslint-config/          @torque/eslint-config: ESLint flat configs (base, next-js, react-internal)
+  lint-config/            @torque/lint-config: Oxlint configs (oxlint/base, oxlint/react, oxlint/next) and Oxfmt config (oxfmt) on Ultracite presets
   typescript-config/      @torque/typescript-config: shared tsconfig bases (base, nextjs, react-library)
 turbo.json                Turborepo task pipeline
 pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
@@ -77,3 +82,5 @@ Not built yet; this lands in Sprint 1.
 - `packages/config`: shared configuration.
 
 Specs and tasks live as issues in the GitHub Project for this repository. Check the relevant issue before implementing a feature.
+
+@AGENTS.md
