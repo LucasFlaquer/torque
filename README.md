@@ -2,7 +2,7 @@
 
 Torque is a mechanic shop management app built to practice fullstack development, with a focus on data listing, pagination, caching and business rules under concurrency. The customer books a vehicle drop-off; the shop diagnoses, quotes, executes and delivers; the customer approves the quote and follows everything through the portal. It is a study and portfolio project.
 
-Project board: _coming soon_
+Project board: [Torque v1](https://github.com/users/LucasFlaquer/projects/4)
 
 ## Roles
 
