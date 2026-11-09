@@ -1,1 +1,1 @@
-export { default } from "@torque/lint-config/oxlint/react";
+export { reactConfig as default } from "@torque/lint-config/oxlint/react";

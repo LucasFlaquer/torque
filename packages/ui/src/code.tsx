@@ -1,9 +1,10 @@
 import type { JSX, ReactNode } from "react";
 
-export const Code = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}): JSX.Element => <code className={className}>{children}</code>;
+interface CodeProps {
+  readonly children: ReactNode;
+  readonly className?: string;
+}
+
+export function Code({ children, className }: CodeProps): JSX.Element {
+  return <code className={className}>{children}</code>;
+}

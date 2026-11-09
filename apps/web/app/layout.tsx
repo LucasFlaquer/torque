@@ -17,16 +17,16 @@ export const metadata: Metadata = {
   title: "Torque",
 };
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => (
-  <html lang="en">
-    <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      {children}
-    </body>
-  </html>
-);
+interface RootLayoutProps {
+  readonly children: React.ReactNode;
+}
 
-export default RootLayout;
+export default function RootLayout({ children }: RootLayoutProps) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
+    </html>
+  );
+}

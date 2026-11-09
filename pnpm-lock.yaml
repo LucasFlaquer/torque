@@ -134,6 +134,13 @@ importers:
       ultracite:
         specifier: 8.1.1
         version: 8.1.1(oxfmt@0.75.0)(oxlint@1.92.0)
+    devDependencies:
+      '@torque/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
 
   packages/redis:
     devDependencies:

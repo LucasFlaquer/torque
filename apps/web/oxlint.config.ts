@@ -1,1 +1,1 @@
-export { default } from "@torque/lint-config/oxlint/next";
+export { nextConfig as default } from "@torque/lint-config/oxlint/next";
