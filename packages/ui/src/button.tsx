@@ -1,20 +1,17 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 interface ButtonProps {
-  children: ReactNode;
-  className?: string;
-  appName: string;
+  readonly children: ReactNode;
+  readonly className?: string;
+  readonly onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
+export function Button({ children, className, onClick }: ButtonProps) {
   return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
-    >
+    <button className={className} onClick={onClick} type="button">
       {children}
     </button>
   );
-};
+}

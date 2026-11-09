@@ -1,0 +1,24 @@
+{
+  "name": "@torque/lint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./oxfmt": "./oxfmt.ts",
+    "./oxlint/base": "./oxlint/base.ts",
+    "./oxlint/next": "./oxlint/next.ts",
+    "./oxlint/react": "./oxlint/react.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.92.0",
+    "ultracite": "8.1.1"
+  },
+  "devDependencies": {
+    "@torque/typescript-config": "workspace:*",
+    "typescript": "7.0.2"
+  }
+}
