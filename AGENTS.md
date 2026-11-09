@@ -85,6 +85,7 @@ pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
 ## Conventions
 
 - English everywhere: code, comments, commit messages, docs, issues and PRs.
+- Commit messages follow Conventional Commits (`feat`, `fix`, `refactor`, `docs`, `chore`, ...). The `commit` skill in `.agents/skills/commit/SKILL.md` holds the full format, scopes and examples; use it to commit.
 - TypeScript in strict mode (`strict`, `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` are on in `@torque/typescript-config/base.json`).
 - Internal packages use the `@torque/*` scope and are referenced with `workspace:*`.
 - Use `pnpm --filter <workspace>` to add dependencies or run scripts in one workspace; do not `cd` into packages and use another package manager.

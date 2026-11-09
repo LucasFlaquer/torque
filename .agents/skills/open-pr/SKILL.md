@@ -45,7 +45,7 @@ If a project command fails because a field or option no longer exists, run `gh p
 ## 3. Check the branch
 
 1. `git branch --show-current`. If it is `main`, stop: ask the user for a branch name (suggest `feat/<key-lowercase>-<short-slug>`, e.g. `feat/s1-01-monorepo-tooling`), create it, and continue there.
-2. `git status --porcelain`. If there are uncommitted changes, show them and ask whether to commit them (Conventional Commits message, matching `git log` style, ending with the attribution line from the system reminder) or leave them out. Never commit without a yes.
+2. `git status --porcelain`. If there are uncommitted changes, show them and ask whether to commit them (following the format in `.agents/skills/commit/SKILL.md`, ending with the attribution line from the system reminder) or leave them out. Never commit without a yes.
 3. `git log --oneline main..HEAD`. If it is empty, stop: there is nothing to open a PR for.
 4. `gh pr list --head <branch> --state open --json number,url`. If a PR already exists, report its URL, do not open a second one, and go straight to step 6 to sync the project with that PR.
 
