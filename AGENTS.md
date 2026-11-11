@@ -28,11 +28,13 @@ Current status: Turborepo scaffold. The Next.js web app has the starter page; `a
 
 ```sh
 pnpm install
-cp .env.example .env
+cp .env.example .env                       # Docker Compose (Postgres and Redis ports/credentials)
+cp apps/api/.env.example apps/api/.env     # API (set BETTER_AUTH_SECRET)
+cp apps/web/.env.example apps/web/.env     # web app
 docker compose up -d --wait   # Postgres and Redis, both with healthchecks
 ```
 
-If port 5432 or 6379 is taken on the host, set `POSTGRES_PORT` / `REDIS_PORT` in `.env` (and update `DATABASE_URL` / `REDIS_URL` to match).
+If port 5432 or 6379 is taken on the host, set `POSTGRES_PORT` / `REDIS_PORT` in the root `.env` and update `DATABASE_URL` / `REDIS_URL` in `apps/api/.env` to match.
 
 ## Root scripts
 
@@ -77,7 +79,7 @@ packages/
   lint-config/            @torque/lint-config: Oxlint configs (oxlint/base, oxlint/react, oxlint/next) and Oxfmt config (oxfmt) on Ultracite presets
   typescript-config/      @torque/typescript-config: shared tsconfig bases (base, nextjs, react-library)
 docker-compose.yml        Postgres 18 and Redis 8 with healthchecks and named volumes
-.env.example              Environment variables template (copy to .env)
+.env.example              Docker Compose variables template (copy to .env); each app has its own .env.example
 turbo.json                Turborepo task pipeline
 pnpm-workspace.yaml       Workspace globs (apps/*, packages/*)
 ```
